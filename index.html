@@ -212,12 +212,12 @@ body{
   <div class="invitation" id="invitation">
     <button class="close-btn" id="closeBtn">✕</button>
     <div class="invitation-content">
-      <img id="invitationImg" src="" alt="دعوت‌نامه عروسی">
+      <img src="https://github.com/Mamad73x2x/Sajad-zahra/raw/main/file_0000000060f08210b4ca0169d9e337b8.png" alt="دعوت‌نامه عروسی">
     </div>
   </div>
 
   <audio id="weddingMusic" loop>
-    <source src="" type="audio/mpeg">
+    <source src="https://dl.mehrdl.top/Music/A/D/LeilaFroohar/Leila%20Forouhar%20-%20Aroosi.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -225,51 +225,31 @@ body{
     const invitation = document.getElementById('invitation');
     const closeBtn = document.getElementById('closeBtn');
     const weddingMusic = document.getElementById('weddingMusic');
-    const invitationImg = document.getElementById('invitationImg');
     let isPlaying = false;
 
-    // تنظیمات تصویر و موسیقی (قابل تغییر)
-    const CONFIG = {
-      imageUrl: 'https://via.placeholder.com/600x800?text=دعوتنامه+عروسی',
-      musicUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-      volume: 0.5
-    };
+    weddingMusic.volume = 0.5;
 
-    // تنظیم تصویر و موسیقی
-    invitationImg.src = CONFIG.imageUrl;
-    weddingMusic.src = CONFIG.musicUrl;
-    weddingMusic.volume = CONFIG.volume;
-
-    // باز کردن پاکت
     envelope.addEventListener('click', function() {
       this.classList.add('opened');
       setTimeout(() => {
         invitation.classList.add('show');
-        // پخش موسیقی خودکار وقتی پاکت باز شود
-        weddingMusic.play().catch(err => {
-          console.log('خطا در پخش موسیقی:', err);
-        });
+        weddingMusic.play().catch(err => console.log('خطا:', err));
         isPlaying = true;
       }, 300);
     });
 
-    // بستن دعوت‌نامه
     closeBtn.addEventListener('click', function() {
       invitation.classList.remove('show');
       setTimeout(() => {
         envelope.classList.remove('opened');
-        // توقف موسیقی هنگام بستن
         weddingMusic.pause();
         weddingMusic.currentTime = 0;
         isPlaying = false;
       }, 600);
     });
 
-    // بستن با کلیک روی background
     invitation.addEventListener('click', function(e) {
-      if(e.target === this) {
-        closeBtn.click();
-      }
+      if(e.target === this) closeBtn.click();
     });
   </script>
 </body>
