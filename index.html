@@ -274,7 +274,7 @@ body{
         <div class="envelope-decoration">💐</div>
         <div class="envelope-decoration">💐</div>
         <div class="envelope-text">
-          <h2>🎊 دعوتنامه عروسی</h2>
+          <h2>🎊 دعوتن��مه عروسی</h2>
           <p>محمد سجاد و زهرا</p>
         </div>
         <div class="envelope-icon">💌</div>
@@ -300,6 +300,7 @@ body{
     const closeBtn = document.getElementById('closeBtn');
     const weddingMusic = document.getElementById('weddingMusic');
     let isPlaying = false;
+    let heartsInterval = null;
 
     weddingMusic.volume = 0.5;
 
@@ -348,13 +349,31 @@ body{
       }
     }
 
+    // شروع قلب‌های مستمر هنگام نمایش عکس
+    function startContinuousHearts() {
+      if (heartsInterval) return; // اگر قبلاً شروع شده باشد
+      
+      createHearts(); // قلب‌های اولیه
+      heartsInterval = setInterval(createHearts, 1500); // هر 1.5 ثانیه
+    }
+
+    // متوقف کردن قلب‌های مستمر
+    function stopContinuousHearts() {
+      if (heartsInterval) {
+        clearInterval(heartsInterval);
+        heartsInterval = null;
+      }
+    }
+
     // باز کردن پاکت
     envelope.addEventListener('click', function() {
       this.classList.add('opened');
-      createHearts(); // شروع قلب‌های متحرک
+      createHearts(); // قلب‌های اولیه
       
       setTimeout(() => {
         invitation.classList.add('show');
+        startContinuousHearts(); // شروع قلب‌های مستمر
+        
         // پخش موسیقی خودکار
         weddingMusic.play().catch(err => {
           console.log('خطا:', err);
@@ -367,6 +386,8 @@ body{
     closeBtn.addEventListener('click', function(e) {
       e.stopPropagation();
       invitation.classList.remove('show');
+      stopContinuousHearts(); // متوقف کردن قلب‌های مستمر
+      
       setTimeout(() => {
         envelope.classList.remove('opened');
         weddingMusic.pause();
