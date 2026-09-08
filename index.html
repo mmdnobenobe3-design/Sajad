@@ -29,14 +29,15 @@ body{
   opacity: 0.7;
 }
 
-/* قلب‌های روی عکس - نیمه شفاف */
+/* قلب‌های روی عکس - شفاف اما واضح */
 .invitation-heart {
   position: absolute;
   pointer-events: none;
-  font-size: 22px;
-  opacity: 0.25;
+  font-size: 28px;
+  opacity: 0.5;
   z-index: 6;
-  text-shadow: 0 0 2px rgba(0,0,0,0.2);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  filter: drop-shadow(0 0 3px rgba(255, 105, 180, 0.4));
 }
 
 .container{
@@ -260,6 +261,14 @@ body{
   50% { opacity: 1; }
 }
 
+/* انیمیشن قلب روی عکس - حرکت آرام و شناور */
+@keyframes floatHearts {
+  0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.5; }
+  25% { transform: translateY(-8px) translateX(3px); opacity: 0.6; }
+  50% { transform: translateY(-15px) translateX(-3px); opacity: 0.5; }
+  75% { transform: translateY(-8px) translateX(2px); opacity: 0.6; }
+}
+
 @media (max-width:768px){
   .envelope{width:290px;height:190px;}
   .envelope-text h2{font-size:20px;}
@@ -362,9 +371,9 @@ body{
       }
     }
 
-    // ایجاد قلب‌های روی عکس (نیمه شفاف)
+    // ایجاد قلب‌های روی عکس (شفاف اما واضح با حرکت)
     function createInvitationHearts() {
-      const heartCount = 12;
+      const heartCount = 15;
       const hearts = ['💕', '💗', '❤️', '💖'];
 
       for (let i = 0; i < heartCount; i++) {
@@ -372,11 +381,14 @@ body{
         heart.className = 'invitation-heart';
         heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
         
-        const randomX = Math.random() * 100;
-        const randomY = Math.random() * 100;
+        const randomX = Math.random() * 90 + 5; // 5% تا 95% (برای اینکه از لبه‌ها دور باشند)
+        const randomY = Math.random() * 80 + 10; // 10% تا 90%
         heart.style.left = randomX + '%';
         heart.style.top = randomY + '%';
-        heart.style.animation = `float ${3 + Math.random() * 2}s ease-in-out infinite`;
+        
+        // تعیین مدت انیمیشن
+        const duration = 4 + Math.random() * 3;
+        heart.style.animation = `floatHearts ${duration}s ease-in-out infinite`;
         heart.style.animationDelay = Math.random() * 2 + 's';
         
         invitationContent.appendChild(heart);
@@ -441,4 +453,112 @@ body{
     });
   </script>
 </body>
+  <!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>دعوت‌نامه عروسی | محمد سجاد و زهرا</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;font-family:'B Nazanin','Tahoma','Arial',sans-serif}
+
+body{
+  background:linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #8b0000 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  margin:0;
+  padding:0;
+  position:relative;
+  overflow:hidden;
+}
+
+/* قلب‌های متحرک */
+.heart {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  font-size: 30px;
+  opacity: 0.7;
+}
+
+/* قلب‌های روی عکس - از پایین به بالا */
+.invitation-heart {
+  position: absolute;
+  pointer-events: none;
+  font-size: 28px;
+  opacity: 0.5;
+  z-index: 6;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  filter: drop-shadow(0 0 3px rgba(255, 105, 180, 0.4));
+  animation: riseHearts 4s ease-in-out infinite;
+}
+
+/* انیمیشن قلب‌ها - حرکت از پایین به بالا */
+@keyframes riseHearts {
+  0% {
+    transform: translateY(0px);
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-80px);
+    opacity: 0.3;
+  }
+}
+
+/* باقی CSS ... */
+</style>
 </html>
+// تابع جدید برای قلب‌های روی عکس - سریع و تکراری
+function createInvitationHearts() {
+  const heartCount = 30;
+  const hearts = ['💕', '💗', '❤️', '💖'];
+
+  for (let i = 0; i < heartCount; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'invitation-heart';
+    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    
+    const startX = Math.random() * 100;
+    heart.style.left = startX + '%';
+    heart.style.bottom = '0px';
+    
+    invitationContent.appendChild(heart);
+
+    // انیمیشن بالا رفتن سریع
+    let bottom = 0;
+    const speed = Math.random() * 3 + 2; // سریع‌تر
+    const duration = Math.random() * 2000 + 1500; // مدت زمان کمتر
+    let currentX = startX;
+
+    const startTime = Date.now();
+    const rise = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      
+      bottom += speed;
+      heart.style.bottom = bottom + 'px';
+      
+      // تغییر opacity
+      const opacity = 1 - (elapsed / duration);
+      heart.style.opacity = Math.max(0, opacity * 0.5);
+
+      if (elapsed > duration || bottom > 400) {
+        clearInterval(rise);
+        heart.remove();
+      }
+    }, 20);
+  }
+}
+
+// شروع قلب‌های روی عکس هر 0.8 ثانیه
+function startInvitationHearts() {
+  if (invitationHeartsInterval) return;
+  
+  createInvitationHearts();
+  invitationHeartsInterval = setInterval(createInvitationHearts, 800);
+}
