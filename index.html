@@ -20,13 +20,13 @@ body{
   overflow:hidden;
 }
 
-/* فشفشه‌های تزیینی */
-.confetti {
+/* قلب‌های متحرک */
+.heart {
   position: fixed;
-  width: 10px;
-  height: 10px;
   pointer-events: none;
   z-index: 999;
+  font-size: 30px;
+  opacity: 0.7;
 }
 
 .container{
@@ -303,48 +303,55 @@ body{
 
     weddingMusic.volume = 0.5;
 
-    // ایجاد فشفشه‌های متحرک
-    function createConfetti() {
-      const confettiPieces = 50;
-      const colors = ['#ff6b9d', '#c44569', '#ffb6c1', '#ffd700', '#ff69b4'];
-      const emojis = ['🎊', '🎉', '💐', '🌹', '💕', '✨'];
+    // ایجاد قلب‌های متحرک
+    function createHearts() {
+      const heartCount = 30;
+      const hearts = ['💕', '💗', '❤️', '💖'];
 
-      for (let i = 0; i < confettiPieces; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti';
-        confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        confetti.style.left = Math.random() * 100 + '%';
-        confetti.style.top = '-10px';
-        confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.fontSize = (Math.random() * 20 + 15) + 'px';
-        confetti.style.opacity = Math.random() * 0.7 + 0.3;
-        document.body.appendChild(confetti);
+      for (let i = 0; i < heartCount; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        
+        const startX = Math.random() * window.innerWidth;
+        heart.style.left = startX + 'px';
+        heart.style.bottom = '-50px';
+        
+        document.body.appendChild(heart);
 
-        // انیمیشن سقوط
-        let top = -10;
-        let left = parseFloat(confetti.style.left);
-        const speed = Math.random() * 3 + 2;
+        // انیمیشن بالا رفتن
+        let bottom = -50;
+        const speed = Math.random() * 2 + 1;
         const sway = Math.random() * 2 - 1;
+        const duration = Math.random() * 3000 + 2000;
+        let currentX = startX;
 
-        const fall = setInterval(() => {
-          top += speed;
-          left += sway;
-          confetti.style.top = top + 'px';
-          confetti.style.left = left + '%';
-          confetti.style.opacity = Math.max(0, parseFloat(confetti.style.opacity) - 0.01);
+        const startTime = Date.now();
+        const rise = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          
+          bottom += speed;
+          currentX += sway * 0.5;
+          
+          heart.style.bottom = bottom + 'px';
+          heart.style.left = currentX + 'px';
+          
+          // تغییر opacity هنگام بالا رفتن
+          const opacity = 1 - (elapsed / duration);
+          heart.style.opacity = Math.max(0, opacity);
 
-          if (top > window.innerHeight) {
-            clearInterval(fall);
-            confetti.remove();
+          if (elapsed > duration || bottom > window.innerHeight) {
+            clearInterval(rise);
+            heart.remove();
           }
-        }, 30);
+        }, 20);
       }
     }
 
     // باز کردن پاکت
     envelope.addEventListener('click', function() {
       this.classList.add('opened');
-      createConfetti(); // شروع فشفشه‌ها
+      createHearts(); // شروع قلب‌های متحرک
       
       setTimeout(() => {
         invitation.classList.add('show');
