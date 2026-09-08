@@ -29,12 +29,14 @@ body{
   opacity: 0.7;
 }
 
-/* قلب‌های پشت عکس */
+/* قلب‌های روی عکس - نیمه شفاف */
 .invitation-heart {
   position: absolute;
   pointer-events: none;
-  font-size: 25px;
-  opacity: 0.6;
+  font-size: 22px;
+  opacity: 0.25;
+  z-index: 6;
+  text-shadow: 0 0 2px rgba(0,0,0,0.2);
 }
 
 .container{
@@ -312,7 +314,6 @@ body{
     const weddingMusic = document.getElementById('weddingMusic');
     let isPlaying = false;
     let heartsInterval = null;
-    let invitationHeartsInterval = null;
 
     weddingMusic.volume = 0.5;
 
@@ -361,9 +362,9 @@ body{
       }
     }
 
-    // ایجاد قلب‌های پشت عکس
+    // ایجاد قلب‌های روی عکس (نیمه شفاف)
     function createInvitationHearts() {
-      const heartCount = 8;
+      const heartCount = 12;
       const hearts = ['💕', '💗', '❤️', '💖'];
 
       for (let i = 0; i < heartCount; i++) {
@@ -406,7 +407,7 @@ body{
       setTimeout(() => {
         invitation.classList.add('show');
         startContinuousHearts(); // شروع قلب‌های مستمر
-        createInvitationHearts(); // اضافه کردن قلب‌های پشت عکس
+        createInvitationHearts(); // اضافه کردن قلب‌های روی عکس
         
         // پخش موسیقی خودکار
         weddingMusic.play().catch(err => {
@@ -422,7 +423,7 @@ body{
       invitation.classList.remove('show');
       stopContinuousHearts(); // متوقف کردن قلب‌های مستمر
       
-      // حذف قلب‌های پشت عکس
+      // حذف قلب‌های روی عکس
       const invitationHearts = invitationContent.querySelectorAll('.invitation-heart');
       invitationHearts.forEach(heart => heart.remove());
       
